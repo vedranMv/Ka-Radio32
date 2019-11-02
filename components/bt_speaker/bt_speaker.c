@@ -23,17 +23,18 @@
 #include "esp_system.h"
 #include "esp_log.h"
 
-#include "bt.h"
+#include "bt_speaker.h"
+#include "esp_bt.h"
+#include "bt_app_core.h"
+#include "bt_app_av.h"
 #include "esp_bt_main.h"
 #include "esp_bt_device.h"
 #include "esp_gap_bt_api.h"
 #include "esp_a2dp_api.h"
 #include "esp_avrc_api.h"
-#include "../bt_speaker/bt_app_av.h"
-#include "../bt_speaker/bt_app_core.h"
-#include "../../main/include/bt_config.h"
 
 #include "audio_renderer.h"
+#define TAG "bt_speaker"
 
 /* event for handler "bt_av_hdl_stack_up */
 enum {
@@ -84,13 +85,13 @@ static void bt_av_hdl_stack_evt(uint16_t event, void *p_param)
     ESP_LOGD(BT_AV_TAG, "%s evt %d", __func__, event);
     switch (event) {
     case BT_APP_EVT_STACK_UP: {
+        ESP_LOGI(TAG, "starting \"%s\"", CONFIG_BT_NAME);
         /* set up device name */
-        //char *dev_name = "ESP_SPEAKER";
-        esp_bt_dev_set_device_name(dev_name);
+        esp_bt_dev_set_device_name(CONFIG_BT_NAME);
 
         /* initialize A2DP sink */
         esp_a2d_register_callback(&bt_app_a2d_cb);
-        esp_a2d_register_data_callback(bt_app_a2d_data_cb);
+        esp_a2d_sink_register_data_callback(bt_app_a2d_data_cb);
         esp_a2d_sink_init();
 
         /* initialize AVRCP controller */
