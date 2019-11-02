@@ -15,7 +15,6 @@
 #include <u8g2.h>
 #include "ucg.h"
 
-
 // lcd_type
 // min 128x64
 #define LCD_COLOR		128	//0x80
@@ -64,6 +63,11 @@
 #define LCD_SPI_ST7735W			202 // 128x160 shifted 2+1
 #define LCD_SPI_ST7789S			203 // 240x240
 		
+#define IS_RADIO(x)         ((x & 0x00000001) == 0)
+#define SET_RADIO(x)        x = (x) & 0xFFFFFFFE
+#define IS_BTSPEAKER(x)     ((x & 0x00000001) == 1)
+#define SET_BTSPEAKER(x)    x = (x) | 0x00000001
+extern bool _isRadio;
 
 typedef struct {
     int channel;             /*!< event type */
@@ -91,6 +95,7 @@ extern ucg_t ucg;
 void task_addon(void *pvParams);
 void task_lcd(void *pvParams);
 void lcd_init(uint8_t Type);
+void task_encoders(void *pvParams);
 void (*serviceAddon)();
 void addonParse(const char *fmt, ...);
 void lcd_welcome(const char* ip,const char*state);
