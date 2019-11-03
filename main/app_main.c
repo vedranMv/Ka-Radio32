@@ -884,7 +884,7 @@ void app_main()
 	websocketinit();
 
 	// log level
-	setLogLevel(ESP_LOG_DEBUG);
+	setLogLevel(ESP_LOG_ERROR);
 	
 	//time display
 	uint8_t ddmm;
@@ -1003,7 +1003,7 @@ ESP_LOGI(TAG, "RAM left: %u", esp_get_free_heap_size());
 		xTaskCreatePinnedToCore (task_encoders, "task_encoders", 2200, NULL, PRIO_ADDON, &pxCreatedTask, CPU_ADDON);  
 		ESP_LOGI(TAG, "%s task: %x","task_encoders",(unsigned int)pxCreatedTask);	
 ESP_LOGI(TAG, "RAM left: %u", esp_get_free_heap_size());
-		//bt_speaker_start(create_renderer_config());
+		bt_speaker_start(create_renderer_config());
 		ESP_LOGI(TAG, "RAM left: %u", esp_get_free_heap_size());
 		goto end_point;
 	}
