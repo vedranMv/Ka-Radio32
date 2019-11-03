@@ -66,6 +66,7 @@ void bt_app_a2d_data_cb(const uint8_t *data, uint32_t len)
 {
     render_samples((char *)data, len, &bt_buffer_fmt);
     if (++m_pkt_cnt % 100 == 0) {
+        ESP_LOGI(BT_AV_TAG, "RAM left: %u", esp_get_free_heap_size());
         ESP_LOGE(BT_AV_TAG, "audio data pkt cnt %u", m_pkt_cnt);
     }
 }
