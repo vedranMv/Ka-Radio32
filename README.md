@@ -1,3 +1,48 @@
+# Readme for this fork
+This fork of KaRadio implements both internet radio and bluetotth speaker with minimalistic user interface. This means that once uploaded, you're able to switch between net radio and bluetooth speaker on the run, with a push of a button.
+
+Bluetooth portion of the code has been directly copied from repository https://github.com/MrBuddyCasino/ESP32_MP3_Decoder
+
+## Things you need
+* ESP32 lolin pro``*`` (16MB Flash, 8MB PSRAM)
+* ESP32 toolchain
+* Rotary encoder
+
+``*`` You will need at least 8MB of flash to fit the program, and probably more RAM than standard model offers. My initial tests with ESP32 (4MB, 512k RAM) were unsuccessful
+
+## How to install
+* Clone this repo to your PC<br />
+    ``git clone https://github.com/vedranMv/Ka-Radio32``
+
+* Compile the code in repository<br />
+   ``cd Ka-Radio32``<br />
+    ``make -j12``
+
+* Make partition table. In case you move the partitions around (they can be placed wherever as long as they fit in your memory and are after 0x1000), make sure to change the offsets later on in the ESP32 download tool<br />
+    ``make partition_table``
+
+* Use ESP32 download tool to transfer binaries to the ESP32<br />
+![Screenshoot of download tool](images/esp32_progtool.png)
+
+## Interface (radio mode - default)
+Radio mode is default after flashing the chip. Once the ship starts, it will create a hotspot to which you can connect in order to enter AP details. After confirming the details, ESP32 automatically resets and connects to your AP. Now you can navigate to the new IP, open web UI and add some stations to your playlist.
+
+* Play/stop radio station by pressing the encoder button
+* Adjust volume by turning the rotary encoder
+* Move between the stations by pressing the encoder for about a second, then rotating it. Rotating counter-clockwise goes to the next station on the list, while counter-clockwise goes to the previous station
+* Double click the encoder quickly in order to change to bluetooth speaker mode
+
+## Interface (bluetooth mode)
+Once in bluetooth mode, ESP32 becomes visible under name _Speaker_ (creative, I know). Use any capable device to connect to it and start playing.
+
+* Adjust volume by turning the rotary encoder
+* Double click the encoder quickly in order to change to radio mode
+
+## Known issues
+* When playing radio streams, web UI becomes unresponsive. Pause the stream to gain access to the UI
+* AAC streams fail to play, resulting in constant cuts and unnatural sound. Potential fix (not tested) might be to increase buffer size from 40k to 512k (for devices with 8MB PSRAM)
+# Original readme
+
 ## STATE
 Release 1.9 Stable
 
