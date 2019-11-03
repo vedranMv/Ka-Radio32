@@ -22,7 +22,10 @@ Bluetooth portion of the code has been directly copied from repository https://g
     ``make partition_table``
 
 * Use ESP32 download tool to transfer binaries to the ESP32<br />
-![Screenshoot of download tool](images/esp32_progtool.png)
+![Screenshot of download tool](images/esp32_progtool.png)
+
+## Wiring
+ESP32 pinout for I2S, encoder, LED etc can be found in board/lolin32dpro.cvs file. You can change the pinout in the file and run ``./nvs_partition_generator.sh [fileName.csv]`` in order to generate new .bin file in board/build directory. For more info, refer to the original Ka-Radio32 repository documentation.
 
 ## Interface (radio mode - default)
 Radio mode is default after flashing the chip. Once the ship starts, it will create a hotspot to which you can connect in order to enter AP details. After confirming the details, ESP32 automatically resets and connects to your AP. Now you can navigate to the new IP, open web UI and add some stations to your playlist.
@@ -32,7 +35,7 @@ Radio mode is default after flashing the chip. Once the ship starts, it will cre
 * Move between the stations by pressing the encoder for about a second, then rotating it. Rotating counter-clockwise goes to the next station on the list, while counter-clockwise goes to the previous station
 * Double click the encoder quickly in order to change to bluetooth speaker mode
 
-## Interface (bluetooth mode)
+## Interface (Bluetooth mode)
 Once in bluetooth mode, ESP32 becomes visible under name _Speaker_ (creative, I know). Use any capable device to connect to it and start playing.
 
 * Adjust volume by turning the rotary encoder
@@ -41,6 +44,22 @@ Once in bluetooth mode, ESP32 becomes visible under name _Speaker_ (creative, I 
 ## Known issues
 * When playing radio streams, web UI becomes unresponsive. Pause the stream to gain access to the UI
 * AAC streams fail to play, resulting in constant cuts and unnatural sound. Potential fix (not tested) might be to increase buffer size from 40k to 512k (for devices with 8MB PSRAM)
+* When in bluetooth speaker mode, there will be no sound until the volume has been adjusted for the first time
+
+## Example project
+I have installed my ESP32 inside a 3D printed case and equipped with UDA1334A I2S DAC followed by HXJ8002 audio amplifer. Internally, a 3.3V buck-boost powers ESP32 and DAC, while a 5V boost converter suplies amplifier and speaker. All powered by a single cell 1500mAh Li-Ion gives about 5-6h of listening time.
+
+* UDA1334 DAC: https://www.aliexpress.com/item/32914177542.html
+* HJX8002 amplifier: www.aliexpress.com/item/32805837141.html
+* Speaker: https://www.visaton.de/en/products/fullrange-systems/frs-8-m-8-ohm
+
+The case was 3D printed from two parts, one of which I decided to cover in red fabric. User interface is simple, consisting of one latching power button with white LED and a rotary encoder with push button.<br/>
+![Screenshoot of download tool](images/DSC_1126.png)
+
+LED is connected to pin 5, displaying status of the ESP32.
+* In radio mode it will be constantly on, with occasional interruptions
+* In bluetooth speaker mode, it will blink with 5Hz frequency until you start playing, then it will remain mostly off for as long as the music plays. Pausing the music (even though it's still connected to the phone/PC/TV), LED will start blinking again.
+
 # Original readme
 
 ## STATE
